@@ -3,8 +3,8 @@
 โปรเจกต์ระบบจัดการ Cisco 7200 Router ผ่านเว็บอินเทอร์เฟซ (Flask + Paramiko + Docker)
 
 ## ข้อมูลการส่งงาน
-* 6631501172@gmail.com
-* **ผู้จัดทำ:** [Aitthikorn Meetham] ([6631501172])
+* 6631501149@gmail.com
+* **ผู้จัดทำ:** [Kittiphong Noothong] ([6631501149])
 
 ## การรันแอปพลิเคชัน (How to run)
 ```bash
