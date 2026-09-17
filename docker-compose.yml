@@ -1,0 +1,7 @@
+services:
+  router-web:
+    build: .
+    container_name: cisco_router_web
+    ports:
+      - "5000:5000"
+    restart: always
