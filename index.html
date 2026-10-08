@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cisco Router Automation</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { max-width: 700px; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; }
+        input[type="text"] { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        pre { background: #1e1e1e; color: #00ff00; padding: 15px; border-radius: 5px; overflow-x: auto; min-height: 180px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Cisco Router Command Console</h2>
+        
+        <div class="form-group">
+            <label for="ip">Router IP Address:</label>
+            <input type="text" id="ip" value="192.168.203.131" placeholder="e.g., 192.168.203.131">
+        </div>
+
+        <div class="form-group">
+            <label for="command">Router Command Line:</label>
+            <input type="text" id="command" value="show ip interface brief" placeholder="e.g., show ip interface brief">
+        </div>
+
+        <button id="runBtn" onclick="runCommand()">Execute Command</button>
+
+        <h3>Output:</h3>
+        <pre id="output">Results will appear here after execution...</pre>
+    </div>
+
+    <script>
+        async function runCommand() {
+            const ip = document.getElementById("ip").value;
+            const command = document.getElementById("command").value;
+            const outputEl = document.getElementById("output");
+            const btn = document.getElementById("runBtn");
+
+            if (!ip || !command) {
+                alert("Please fill in both IP and Command.");
+                return;
+            }
+
+            outputEl.textContent = "Connecting to router and executing command...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch("/api/execute", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ ip, command })
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    outputEl.textContent = data.output;
+                } else {
+                    outputEl.textContent = "Error: " + data.error;
+                }
+            } catch (err) {
+                outputEl.textContent = "Execution failed: " + err.message;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
